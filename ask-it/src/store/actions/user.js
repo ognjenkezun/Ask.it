@@ -27,7 +27,7 @@ export const authenticateUser = (payload) => (dispatch, getState) => {
 const authenticateUserSuccess = (response) => {
     return {
         type: actionTypes.AUTHENTICATE_USER_SUCCESS,
-        user: response.data
+        user: response.data.data
     }
 }
 

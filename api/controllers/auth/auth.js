@@ -1,5 +1,5 @@
-import authService from '../../services/auth/auth';
-import util from '../../utility/util';
+const authService =  require('../../services/auth/auth');
+const util = require('../../utility/util');
 
 const authController = {};
 
@@ -38,11 +38,14 @@ authController.login = async (req, res) => {
 
     try {
         const loginUser = await authService.login(loginData);
+        if (loginUser) {
+            return util.sendSuccess(res, 200, 'User logged', loginUser);
+        }
 
-        return util.sendSuccess(res, 200, 'User logged', loginUser);
+        return util.sendError(res, 401, 'Pasword or email is not correct')
     } catch (error) {
         return util.sendError(res, 400, error);
     }
 }
 
-export default authController;
+module.exports = authController;

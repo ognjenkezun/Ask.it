@@ -1,6 +1,6 @@
-import crypt from '../../helpers/crypto';
-import jwt from '../../middlewares/jwt';
-import authRepository from '../../db/repositories/auth';
+const crypt = require('../../helpers/crypto');
+const jwt = require('../../middlewares/jwt');
+const authRepository = require('../../db/repositories/auth');
 
 // const User = require('../../db/models').User;
 
@@ -44,4 +44,4 @@ authService.login = async (loginData) => {
     return null;
 }
 
-export default authService;
+module.exports = authService;

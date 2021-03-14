@@ -28,4 +28,4 @@ jwt.authenticate = (req, res, next) => {
     }
 }
 
-export default jwt;
+module.exports = jwt;

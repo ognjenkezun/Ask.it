@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
-import { Divider } from '@material-ui/core';
+import { Button, Divider } from '@material-ui/core';
 import { logoutUser } from '../../store/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from './Login';
@@ -162,10 +162,10 @@ export default function Navbar(props) {
               <AccountCircle />
             </IconButton> 
               :
-              <Link className={classes.navbarItem} onClick={() => setOpenLogin(true)}>Login</Link>
+              <Button className={classes.navbarItem} onClick={() => setOpenLogin(true)}>Login</Button>
             }
             { !token ?
-              <Link className={classes.navbarItem} onClick={() => setOpenRegister(true)}>Register </Link> : null
+              <Button className={classes.navbarItem} onClick={() => setOpenRegister(true)}>Register </Button> : null
             }
           </div>
         </Toolbar>

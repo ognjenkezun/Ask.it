@@ -7,14 +7,16 @@ export const getQuestions = (payload) => (dispatch, getState) => {
         url: 'http://localhost:3200/question',
         headers: {"jwt" : localStorage.getItem("accessToken")}, 
         params: {page: payload?.page ?? 1}
-        }).then((response) => dispatch(getQuestionsSuccess(response)));
+        }).then((response) => {
+            console.log("==>>>>>>", response);
+            dispatch(getQuestionsSuccess(response))});
 }
 
 const getQuestionsSuccess = (response) => {
     return {
         type: actionTypes.GET_QUESTIONS_SUCCESS,
-        questions: response.data,
-        questionsPage: response.config.params.page
+        questions: response?.data?.data ?? [],
+        questionsPage: response?.config?.params?.page ?? 1
     }
 }
 
@@ -42,7 +44,7 @@ export const getQuestion = (payload) => (dispatch, getState) => {
 const getQuestionSuccess = (response) => {
     return {
         type: actionTypes.GET_QUESTION_SUCCESS,
-        question: response.data
+        question: response.data.data
     }
 }
 

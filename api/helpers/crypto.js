@@ -1,5 +1,5 @@
 'use strict';
-var crypto = require('crypto');
+const crypto = require('crypto');
 const crypt = {};
 
 /**
@@ -32,4 +32,4 @@ var sha512 = function(password, salt){
 crypt.genRandomString = genRandomString;
 crypt.sha512 = sha512;
 
-export default crypt;
+module.exports = crypt;

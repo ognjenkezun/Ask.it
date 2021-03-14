@@ -5,7 +5,7 @@ import answerRoutes from '../routes/answer/answer';
 // import authController from './auth/auth';
 import jwt from '../middlewares/jwt';
 
-const { Router } = require('express');
+import { Router } from 'express';
 const router = new Router();
 
 const controllers = {};

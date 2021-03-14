@@ -11,6 +11,7 @@ import { getQuestion } from '../store/actions/question';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAnswer } from '../store/actions/answer';
 import { showSuccessNotification } from '../components/common/Toastify';
+import { humanizeDate } from '../helpers';
 
 const useStyles = makeStyles({
     root: {
@@ -42,7 +43,7 @@ export default function QuestionPage(props) {
 
     const user = useSelector(state => state.userReducer.user);
     const question = useSelector(state => state.questionsReducer.question);
-    const answer = useSelector(state => state.answersReducer.answer);
+    //const answer = useSelector(state => state.answersReducer.answer);
 
     const [token, setToken] = useState('');
 
@@ -78,12 +79,12 @@ export default function QuestionPage(props) {
 
     useEffect(() => {
     }, [question]);
-    useEffect(() => {
-        dispatch(getQuestion({id: props.match.params.questionId}));
-    }, [answer]);
+    // useEffect(() => {
+    //     dispatch(getQuestion({id: props.match.params.questionId}));
+    // }, [answer]);
 
     //Isto uraditi i za Answers!!!!
-
+    console.log("=============>", question);
     return (
         <Page history={props.history}>
             <Container maxWidth="lg">
@@ -96,11 +97,11 @@ export default function QuestionPage(props) {
                                     <p>{question?.content ?? ""}</p>
                                     <div>
                                         <PersonIcon/>
-                                        <span>{question?.userId ?? ""}</span>
+                                        <span>{question?.User?.firstName ?? ""} {question?.User?.lastName ?? ""}</span>
                                     </div>
                                     <div>
                                         <TodayIcon/>
-                                        <span>{question?.createdAt ?? ""}</span>
+                                        <span>{humanizeDate(question?.createdAt) || ""}</span>
                                     </div>
                                 </CardContent>
                                 <CardActions fullWidth>
@@ -140,11 +141,11 @@ export default function QuestionPage(props) {
                                     <p>{answer?.content ?? ""}</p>
                                     <div>
                                         <PersonIcon/>
-                                        <span>{answer?.answerUserId ?? ""}</span>
+                                        <span>{answer?.User?.firstName ?? ""} {answer?.User?.lastName ?? ""}</span>
                                     </div>
                                     <div>
                                         <TodayIcon/>
-                                        <span>{answer?.createdAt ?? ""}</span>
+                                        <span>{humanizeDate(answer?.createdAt) || ""}</span>
                                     </div>
                                 </CardContent>
                                 <CardActions fullWidth>
@@ -165,7 +166,7 @@ export default function QuestionPage(props) {
                                     }
                                     <span>{answer?.dislike ?? "0"}</span>
                                     { localStorage.getItem("accessToken") ?
-                                        <Tooltip title="Delete" aria-label="delete">
+                                        <Tooltip title="Edit" aria-label="edit">
                                             <IconButton aria-label="edit">
                                                 <BorderColorIcon color="primary" />
                                             </IconButton>

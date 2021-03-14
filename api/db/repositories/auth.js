@@ -14,4 +14,4 @@ authRepository.login = async (email) => {
     });
 }
 
-export default authRepository;
+module.exports = authRepository;

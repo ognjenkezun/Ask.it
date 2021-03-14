@@ -131,7 +131,7 @@ export default function Home(props) {
                                             </Tooltip> : <ThumbDownIcon color="secondary" />
                                         }
                                         <span>{question?.dislike ?? "0"}</span>
-                                        <span className={classes.horizontalMargin}>(12) answers</span>
+                                        <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
                                         <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
                                     </CardActions>
                                 </Card>
