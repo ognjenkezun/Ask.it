@@ -98,14 +98,14 @@ questionController.getWithTheMostLikes = async (req, res) => {
 }
 
 questionController.createNew = async (req, res) => {
-    if (!req.body.content || !req.body.like || !req.body.dislike || !req.user.id) {
+    if (!req.body.content) {
         return util.sendError(res, 400, 'Please provide complete details');
     }
-
+    
     const newQuestion = {
         content: req.body.content,
-        like: req.body.like,
-        dislike: req.body.dislike,
+        like: 0,
+        dislike: 0,
         userId: req.user.id,
     };
 

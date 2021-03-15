@@ -1,4 +1,4 @@
-const jwtToken = require('jsonwebtoken');
+import jwtToken from 'jsonwebtoken';
 
 const jwt = {};
 const secret = process.env.SECRET;
@@ -18,7 +18,6 @@ jwt.authenticate = (req, res, next) => {
 
     if(isValid) {
         const user = jwtToken.decode(token);
-        console.log("DECODED TOKEN IS => ", user);
         req.user = user;
         next();
     }
@@ -28,4 +27,4 @@ jwt.authenticate = (req, res, next) => {
     }
 }
 
-module.exports = jwt;
+export default jwt;

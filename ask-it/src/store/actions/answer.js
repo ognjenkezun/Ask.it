@@ -17,8 +17,6 @@ const getAnswerSuccess = (response) => {
 export const addAnswer = (payload) => (dispatch, getState) => {
     axios.post(`http://localhost:3200/answer`, {
             content: payload.content,
-            like: 20,
-            dislike: 3,
             answerTo: payload.questionId
         }, { headers: {"jwt" : localStorage.getItem("accessToken") }}) 
     .then((response) => {

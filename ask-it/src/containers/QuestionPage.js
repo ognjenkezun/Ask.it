@@ -121,6 +121,7 @@ export default function QuestionPage(props) {
                                         </Tooltip> : <ThumbDownIcon color="secondary" />
                                     }
                                     <span>{question?.dislike ?? "0"}</span>
+                                    <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
                                 </CardActions>
                             </Card> : null
                         }

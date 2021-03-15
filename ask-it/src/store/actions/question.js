@@ -30,7 +30,7 @@ export const getHotQuestions = (payload) => (dispatch, getState) => {
 const getHotQuestionsSuccess = (response) => {
     return {
         type: actionTypes.GET_HOT_QUESTIONS_SUCCESS,
-        questions: response.data
+        questions: response?.data?.data ?? []
     }
 }
 
@@ -44,16 +44,14 @@ export const getQuestion = (payload) => (dispatch, getState) => {
 const getQuestionSuccess = (response) => {
     return {
         type: actionTypes.GET_QUESTION_SUCCESS,
-        question: response.data.data
+        question: response?.data?.data ?? []
     }
 }
 
 export const addQuestion = (payload) => (dispatch, getState) => {
     const token = localStorage.getItem("accessToken");
-    axios.post(`http://localhost:3200/question`, {content: payload.content,
-        like: 450,
-        dislike: 20,
-        userId: 3}, 
+    axios.post(`http://localhost:3200/question`, 
+        { content: payload.content }, 
         { headers: {"jwt" : token}
     })
         .then((response) => dispatch(addQuestionSuccess(response)));
@@ -62,7 +60,7 @@ export const addQuestion = (payload) => (dispatch, getState) => {
 const addQuestionSuccess = (response) => {
     return {
         type: actionTypes.ADD_QUESTION_SUCCESS,
-        question: response.data
+        question: response.data.data
     }
 }
 
@@ -76,6 +74,6 @@ export const getMyQuestions = (payload) => (dispatch, getState) => {
 const getMyQuestionsSuccess = (response) => {
     return {
         type: actionTypes.GET_MY_QUESTIONS_SUCCESS,
-        questions: response.data
+        questions: response?.data?.data ?? []
     }
 }

@@ -19,7 +19,7 @@ function App() {
           exact
           component={Home}
         />
-        <PrivateRoute
+        <Route
           path="/question/:questionId"
           exact
           component={QuestionPage}

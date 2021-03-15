@@ -1,1 +1,0 @@
-// naporaviti fajlove za sve modele

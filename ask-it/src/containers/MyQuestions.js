@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles, Container, Grid, Card, CardContent, TextField, Button, CardActions, IconButton, Tooltip } from '@material-ui/core';
 import Page from '../components/common/Page';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import PersonIcon from '@material-ui/icons/Person';
+import TodayIcon from '@material-ui/icons/Today';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { useSelector, useDispatch } from 'react-redux';
 import { addQuestion, getMyQuestions } from '../store/actions/question';
 import { showSuccessNotification } from '../components/common/Toastify';
+import { humanizeDate } from '../helpers';
 
 const useStyles = makeStyles({
     root: {
@@ -91,6 +94,14 @@ export default function MyQuestions(props) {
                             <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
                                 <CardContent style={{ textAlign: "start" }}>
                                     {question?.content ?? ""}
+                                    <div>
+                                        <PersonIcon/>
+                                        <span>{question?.User?.firstName ?? ""} {question?.User?.lastName ?? ""}</span>
+                                    </div>
+                                    <div>
+                                        <TodayIcon/>
+                                        <span>{humanizeDate(question?.createdAt) || ""}</span>
+                                    </div>
                                 </CardContent>
                                 <CardActions fullWidth>
                                     <Tooltip title="Like" aria-label="like">
@@ -105,7 +116,7 @@ export default function MyQuestions(props) {
                                         </IconButton>
                                     </Tooltip>
                                     <span>{question?.dislike ?? "0"}</span>
-                                    <span className={classes.horizontalMargin}>(12) answers</span>
+                                    <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
                                     <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
                                 </CardActions>
                             </Card>

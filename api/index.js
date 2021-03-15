@@ -1,15 +1,14 @@
-// import controllers from './controllers'
 import questionRoutes from './routes/question/question';
 import answerRoutes from './routes/answer/answer';
 import userRoutes from './routes/user/user';
 import authRoutes from './routes/auth/auth';
 
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = process.env.APP_PORT;
-const cors = require('cors');
+import cors from 'cors';
 
 app.use(bodyParser.json());
 app.use(cors());

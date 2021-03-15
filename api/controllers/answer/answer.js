@@ -48,14 +48,14 @@ answerController.getById = async (req, res) => {
 }
 
 answerController.createNew = async (req, res) => {
-    if (!req.body.answerTo || !req.body.content || !req.body.like || !req.body.dislike || !req.user.id) {
+    if (!req.body.answerTo || !req.body.content || !req.user.id) {
         return util.sendError(res, 400, 'Please provide complete details');
     }
 
     const newAnswer = {
         content: req.body.content,
-        like: req.body.like,
-        dislike: req.body.dislike,
+        like: 0,
+        dislike: 0,
         answerUserId: req.user.id,
         answerTo: req.body.answerTo
     }

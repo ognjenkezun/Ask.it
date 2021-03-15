@@ -30,7 +30,7 @@ questionRepository.getAll = async (offset, limit) => {
 }
 
 questionRepository.getAllForLoggedUser = async (userId) => {
-    return Question.findOne({
+    return Question.findAll({
         where: { 
             userId
         },
@@ -50,7 +50,7 @@ questionRepository.getAllForLoggedUser = async (userId) => {
                     'firstName', 'lastName'
                 ]
             }]
-        }],
+        }]
     });
 }
 

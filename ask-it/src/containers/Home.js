@@ -3,9 +3,12 @@ import Page from '../components/common/Page'
 import { Card, CardContent, Typography, CardActions, makeStyles, Button, IconButton, Fab, Tooltip, Container, Grid, List, ListItem, ListItemText, Tabs, Tab, Box, TextField } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import PersonIcon from '@material-ui/icons/Person';
+import TodayIcon from '@material-ui/icons/Today';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuestions } from '../store/actions/question';
 import PropTypes from 'prop-types';
+import { humanizeDate } from '../helpers';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -94,87 +97,126 @@ export default function Home(props) {
     return (
         <Page history={props.history}>
             <Container maxWidth="lg">
-                <Grid container className={classes.container}>
-                    <Tabs lg={3} md={6}
-                        orientation="vertical"
-                        variant="scrollable"
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="Vertical tabs example"
-                        className={classes.tabs}
-                        >
-                        <Tab label="Last questions" {...a11yProps(0)} />
-                        <Tab label="Questions with the most asnwers" {...a11yProps(1)} />
-                        <Tab label="Questions with the most likes" {...a11yProps(2)} />
-                    </Tabs>
-                    <TabPanel value={value} index={0} lg={9} md={6}>
+                { questions.length ?
+                    <Grid container className={classes.container}>
+                        <Tabs lg={3} md={6}
+                            orientation="vertical"
+                            variant="scrollable"
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="Vertical tabs example"
+                            className={classes.tabs}
+                            >
+                            <Tab label="Last questions" {...a11yProps(0)} />
+                            <Tab label="Questions with the most asnwers" {...a11yProps(1)} />
+                            <Tab label="Questions with the most likes" {...a11yProps(2)} />
+                        </Tabs>
+                        <TabPanel value={value} index={0} lg={9} md={6}>
+                            <Grid item lg={12}>
+                                { questions && questions.map((question, index) => (
+                                    <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
+                                        <CardContent style={{ textAlign: "start" }}>
+                                            <p>{question?.content ?? ""}</p>
+                                            <div>
+                                                <PersonIcon/>
+                                                <span>{question?.User?.firstName ?? ""} {question?.User?.lastName ?? ""}</span>
+                                            </div>
+                                            <div>
+                                                <TodayIcon/>
+                                                <span>{humanizeDate(question?.createdAt) || ""}</span>
+                                            </div>
+                                        </CardContent>
+                                        <CardActions fullWidth>
+                                            { token ?
+                                                <Tooltip title="Like" aria-label="like">
+                                                    <IconButton aria-label="like" style={{ float: "right" }}>
+                                                        <ThumbUpIcon color="primary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbUpIcon color="primary" />
+                                            }
+                                            <span>{question?.like ?? "0"}</span>
+                                            { token ?
+                                                <Tooltip title="Dislike" aria-label="dislike">
+                                                    <IconButton aria-label="dislike" style={{ float: "right" }}>
+                                                        <ThumbDownIcon color="secondary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbDownIcon color="secondary" />
+                                            }
+                                            <span>{question?.dislike ?? "0"}</span>
+                                            <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
+                                            <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
+                                        </CardActions>
+                                    </Card>
+                                )) }
+                                <Button variant="contained" color="primary" onClick={loadMoreQuestion} type="button">Load more</Button>
+                            </Grid>
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
+                            <Grid item lg={12}>
+                                { hotQuestions && hotQuestions.map((question, index) => (
+                                    <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
+                                        <CardContent style={{ textAlign: "start" }}>
+                                            <p>{question?.content ?? ""}</p>
+                                        </CardContent>
+                                        <CardActions fullWidth>
+                                            { token ?
+                                                <Tooltip title="Like" aria-label="like">
+                                                    <IconButton aria-label="like" style={{ float: "right" }}>
+                                                        <ThumbUpIcon color="primary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbUpIcon color="primary" />
+                                            }
+                                            <span>{question?.like ?? "0"}</span>
+                                            { token ?
+                                                <Tooltip title="Dislike" aria-label="dislike">
+                                                    <IconButton aria-label="dislike" style={{ float: "right" }}>
+                                                        <ThumbDownIcon color="secondary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbDownIcon color="secondary" />
+                                            }
+                                            <span>{question?.dislike ?? "0"}</span>
+                                            <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
+                                            <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
+                                        </CardActions>
+                                    </Card>
+                                ))}
+                                <Button variant="contained" color="primary" onClick={loadMoreQuestion} type="button">Load more</Button>
+                            </Grid>
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
                         <Grid item lg={12}>
-                            { questions && questions.map((question, index) => (
-                                <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
-                                    <CardContent style={{ textAlign: "start" }}>
-                                        <p>{question?.content ?? ""}</p>
-                                    </CardContent>
-                                    <CardActions fullWidth>
-                                        { token ?
-                                            <Tooltip title="Like" aria-label="like">
-                                                <IconButton aria-label="like" style={{ float: "right" }}>
-                                                    <ThumbUpIcon color="primary" />
-                                                </IconButton>
-                                            </Tooltip> : <ThumbUpIcon color="primary" />
-                                        }
-                                        <span>{question?.like ?? "0"}</span>
-                                        { token ?
-                                            <Tooltip title="Dislike" aria-label="dislike">
-                                                <IconButton aria-label="dislike" style={{ float: "right" }}>
-                                                    <ThumbDownIcon color="secondary" />
-                                                </IconButton>
-                                            </Tooltip> : <ThumbDownIcon color="secondary" />
-                                        }
-                                        <span>{question?.dislike ?? "0"}</span>
-                                        <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
-                                        <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
-                                    </CardActions>
-                                </Card>
-                            ))}
-                            <Button variant="contained" color="primary" onClick={loadMoreQuestion} type="button">Load more</Button>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                        <Grid item lg={12}>
-                            { hotQuestions && hotQuestions.map((question, index) => (
-                                <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
-                                    <CardContent style={{ textAlign: "start" }}>
-                                        <p>{question?.content ?? ""}</p>
-                                    </CardContent>
-                                    <CardActions fullWidth>
-                                        { token ?
-                                            <Tooltip title="Like" aria-label="like">
-                                                <IconButton aria-label="like" style={{ float: "right" }}>
-                                                    <ThumbUpIcon color="primary" />
-                                                </IconButton>
-                                            </Tooltip> : <ThumbUpIcon color="primary" />
-                                        }
-                                        <span>{question?.like ?? "0"}</span>
-                                        { token ?
-                                            <Tooltip title="Dislike" aria-label="dislike">
-                                                <IconButton aria-label="dislike" style={{ float: "right" }}>
-                                                    <ThumbDownIcon color="secondary" />
-                                                </IconButton>
-                                            </Tooltip> : <ThumbDownIcon color="secondary" />
-                                        }
-                                        <span>{question?.dislike ?? "0"}</span>
-                                        <span className={classes.horizontalMargin}>(12) answers</span>
-                                        <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
-                                    </CardActions>
-                                </Card>
-                            ))}
-                            <Button variant="contained" color="primary" onClick={loadMoreQuestion} type="button">Load more</Button>
-                        </Grid>
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
-                        Item Three
-                    </TabPanel>
-                </Grid>
+                                { hotQuestions && hotQuestions.map((question, index) => (
+                                    <Card key={index} className={classes.root} variant="outlined" style={{ margin: 10 }}>
+                                        <CardContent style={{ textAlign: "start" }}>
+                                            <p>{question?.content ?? ""}</p>
+                                        </CardContent>
+                                        <CardActions fullWidth>
+                                            { token ?
+                                                <Tooltip title="Like" aria-label="like">
+                                                    <IconButton aria-label="like" style={{ float: "right" }}>
+                                                        <ThumbUpIcon color="primary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbUpIcon color="primary" />
+                                            }
+                                            <span>{question?.like ?? "0"}</span>
+                                            { token ?
+                                                <Tooltip title="Dislike" aria-label="dislike">
+                                                    <IconButton aria-label="dislike" style={{ float: "right" }}>
+                                                        <ThumbDownIcon color="secondary" />
+                                                    </IconButton>
+                                                </Tooltip> : <ThumbDownIcon color="secondary" />
+                                            }
+                                            <span>{question?.dislike ?? "0"}</span>
+                                            <span className={classes.horizontalMargin}>({question?.Answers?.length ?? 0}) answers</span>
+                                            <Button variant="contained" size="small" color="primary" onClick={()=>openQuestion(question.id)}>View</Button>
+                                        </CardActions>
+                                    </Card>
+                                ))}
+                                <Button variant="contained" color="primary" onClick={loadMoreQuestion} type="button">Load more</Button>
+                            </Grid>
+                        </TabPanel>
+                    </Grid> : <h1>No questions for displaying</h1>
+                }
             </Container>
         </Page>
     )
